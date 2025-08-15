@@ -65,5 +65,5 @@ def test_metrics_collection(client):
     metrics_text = response.data.decode('utf-8')
     
     # Verify that our custom metrics are present
-    assert 'http_requests_total' in metrics_text
-    assert 'http_request_duration_seconds' in metrics_text
+    assert 'flask_http_request_total' in metrics_text
+    assert 'flask_http_request_duration_seconds' in metrics_text
