@@ -1,9 +1,9 @@
 # Default values for flask-app
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: gfnogueira/flask-devops-app
-  pullPolicy: IfNotPresent
+  pullPolicy: Never  # Use local image, don't pull from registry
   tag: "latest"
 
 imagePullSecrets: []
@@ -57,9 +57,9 @@ resources:
     memory: 128Mi
 
 autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 10
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
@@ -69,27 +69,31 @@ tolerations: []
 
 affinity: {}
 
-# Health checks
+# Health checks - More lenient for development
 livenessProbe:
   httpGet:
     path: /health
     port: 5000
-  initialDelaySeconds: 30
-  periodSeconds: 10
+  initialDelaySeconds: 90
+  periodSeconds: 30
+  timeoutSeconds: 10
+  failureThreshold: 5
 
 readinessProbe:
   httpGet:
-    path: /health
+    path: /ready
     port: 5000
-  initialDelaySeconds: 5
-  periodSeconds: 5
+  initialDelaySeconds: 60
+  periodSeconds: 15
+  timeoutSeconds: 5
+  failureThreshold: 5
 
 # Prometheus monitoring
 monitoring:
   enabled: true
   serviceMonitor:
     enabled: true
-    namespace: observability
+    namespace: developer
     interval: 30s
     path: /metrics
 
