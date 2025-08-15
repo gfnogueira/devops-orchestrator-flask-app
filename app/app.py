@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Prometheus metrics
-REQUEST_COUNT = Counter("http_requests_total", "Total HTTP Requests", ["method", "endpoint", "status"])
-REQUEST_DURATION = Histogram("http_request_duration_seconds", "HTTP Request Duration", ["method", "endpoint"])
+REQUEST_COUNT = Counter("flask_http_request_total", "Total HTTP Requests", ["method", "endpoint", "status"])
+REQUEST_DURATION = Histogram("flask_http_request_duration_seconds", "HTTP Request Duration", ["method", "endpoint"])
 
 @app.before_request
 def before_request():

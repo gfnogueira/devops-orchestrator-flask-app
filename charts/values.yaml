@@ -93,7 +93,7 @@ monitoring:
   enabled: true
   serviceMonitor:
     enabled: true
-    namespace: developer
+    namespace: observability
     interval: 30s
     path: /metrics
 
