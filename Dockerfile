@@ -10,7 +10,7 @@ WORKDIR /build
 
 # Copy requirements and install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 FROM python:3.11-slim
 
@@ -24,13 +24,11 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /app
 
-# Copy Python packages and set ownership
-COPY --from=builder --chown=appuser:appuser /root/.local /home/appuser/.local
+# Copy Python packages globally
+COPY --from=builder /usr/local /usr/local
 
 # Copy application code and set ownership
-COPY --chown=appuser:appuser ./app /app
-
-ENV PATH=/home/appuser/.local/bin:$PATH
+COPY --chown=appuser:appuser app/ /app
 
 # Switch to non-root user
 USER appuser
