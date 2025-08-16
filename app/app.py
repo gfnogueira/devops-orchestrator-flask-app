@@ -41,7 +41,7 @@ def hello():
     return jsonify({
         "message": "Hello from Flask DevOps App!",
         "version": "1.0.0",
-        "environment": os.getenv("FLASK_ENV", "development")
+        "environment": os.getenv("FLASK_ENV", "production")
     })
 
 @app.route("/health")
@@ -92,7 +92,8 @@ def internal_error(error):
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
-    debug = os.getenv("FLASK_ENV") == "development"
+    debug = os.getenv("FLASK_ENV", "production") == "development"
     
-    logger.info(f"Starting Flask app on port {port}")
+    logger.info(f"Starting Flask app on port {port} (debug={debug})")
+    logger.info(f"Environment: {os.getenv('FLASK_ENV', 'production')}")
     app.run(host="0.0.0.0", port=port, debug=debug)
