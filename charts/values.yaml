@@ -90,12 +90,21 @@ readinessProbe:
 
 # Prometheus monitoring
 monitoring:
-  enabled: true
+  enabled: true  # Enable monitoring
   serviceMonitor:
     enabled: true
-    namespace: observability
+    namespace: developer  # Deploy ServiceMonitor in same namespace as app
     interval: 30s
     path: /metrics
+    scrapeTimeout: 10s
+    # Additional labels for ServiceMonitor
+    labels:
+      monitoring: enabled
+    # Namespace selector - empty means all namespaces
+    namespaceSelector: {}
+    # Optional relabelings for advanced metric manipulation
+    relabelings: []
+    metricRelabelings: []
 
 # Environment variables
 env:
