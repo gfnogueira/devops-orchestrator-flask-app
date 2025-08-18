@@ -63,8 +63,10 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
-
+#nodeSelector: {}
+nodeSelector:
+  kubernetes.io/hostname: infra-cluster
+  
 tolerations: []
 
 affinity: {}
